@@ -1,112 +1,98 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-int updateResult(int *result, int element, int index)
+int find_minimum_value(int *arr, int arr_count)
 {
-    result[index] = element;
-}
+    int minimum_stick_cut_val = 0;
 
-int findMinimumValue(int *arr, int arr_count)
-{
-    int minimumStickCutVal;
     for (int i = 0; i < arr_count; i++)
     {
         // if item is less than minimumStickVal and miniMumStickCut does not equal 0
         // assign item to minimumStickcutVal.
         if (arr[i] > 0)
-            minimumStickCutVal = arr[i];
+            minimum_stick_cut_val  = arr[i];
     }
 
     for (int i = 0; i < arr_count; i++)
     {
         // if item is less than minimumStickVal and miniMumStickCut does not equal 0
         // assign item to minimumStickcutVal.
-        if (arr[i] < minimumStickCutVal && arr[i] != 0)
-            minimumStickCutVal = arr[i];
+        if (arr[i] < minimum_stick_cut_val  && arr[i] != 0)
+           minimum_stick_cut_val  = arr[i];
     }
 
-    return minimumStickCutVal;
+    return minimum_stick_cut_val ;
 }
 
-bool isEndingCondition(int *arr, int arr_count)
+bool is_ending_condition(int *arr, int arr_count)
 {
     for (int i = 0; i < arr_count; i++)
     {
         if (arr[i] > 0)
             return false;
     }
-
     return true;
 }
 
-int *cutTheSticks(int arr_count, int *arr, int *result_count)
+int *cut_the_sticks(int arr_count, int *arr)
 {
-    int counterOfSize = 0;
+    int *result_count = (int*)malloc(arr_count);
 
-    int resultSize = 0;
+    int j = 0;
     
-    while (!isEndingCondition(arr, arr_count))
+    while (!is_ending_condition(arr, arr_count))
     {
-        int currentMinimumVal = findMinimumValue(arr, arr_count);
+        int current_minimum_val = find_minimum_value(arr, arr_count);
     
-        counterOfSize = 0;
+        int counter_of_size = 0;
 
-        // looping through the array called arr
-        // printf("%d", currentMinimumVal);
+        result_count[j] = 0;
+
         for (int i = 0; i < arr_count; i++)
-        {
+        {   
             // if the item does not equal zero and it is greater than the minimum value
             // subtract minimum value from the item
-            if (arr[i] != 0 && arr[i] >= currentMinimumVal)
+            if (arr[i] != 0 && arr[i] >= current_minimum_val)
             {
-                arr[i] = arr[i] - currentMinimumVal;
-                counterOfSize++;
+                arr[i] = arr[i] - current_minimum_val;
+                counter_of_size++;
             }
             printf("%d ", arr[i]);
         }
-        
-        updateResult(result_count, counterOfSize, resultSize);
-        resultSize++;
-        
-        
 
-        printf("resultSize: " "%d\n", resultSize);
-        printf("Size of array is: "
-               "%d\n",
-               counterOfSize);
-        // isEndingCondition(arr, arr_count);
-        // printf("The bool condition is %d ", isEndingCondition(arr, arr_count));
-        // printf("minimunVal is:" " %d\n", currentMinimumVal);
-        // printf("\n");
+        result_count[j] = counter_of_size;
+
+        j++;
+
+        printf("\n");
     }
-    // for (int i = 0; i < arr_count; i++)
-    // {
-    //     if(result_count[i] != 0){
-    //         printf("%d\n", result_count[i]);
-    //     }else{
-    //         return 0;
-    //     }
-    // }
+    
+    // printf("\n");
+
+    for(int j = 0; j < arr_count; j++)
+    {
+        printf("counter of size is: %d\n", result_count[j]);
+    }
+
     return result_count;
 }
 
 int main()
 {
-    // int size = 6;
-    // int arr[6] = {5, 4, 4, 2, 2, 8};
-    int size = 8;
-    int arr[8] = {1, 2, 3, 4, 3, 3, 2, 1};
-    int result_count;
+    int arr[] = {5, 4, 4, 2, 2, 8};
+    
+    int size = sizeof(arr) / sizeof(arr[0]);
 
-    //int* arr = malloc(size * sizeof(int));
-
-    int *result = cutTheSticks(size, arr, &result_count);
-    // printf("%d\n", result);
-    // printf("size of result: " "%ld\n", sizeof(result) / sizeof(result[0]));
-    //printf("byte size of result: " "%ld\n",sizeof(result));
+    int *result = cut_the_sticks(size, arr);
 
     for (int i = 0; i < size; i++)
     {
-        printf("result item is: " "%d\n", result[i]);
+        if(result[i] != 0)
+            printf("%d\n", result[i]);
+        else
+            return 0;
     }
+
+    free(result);
 }
