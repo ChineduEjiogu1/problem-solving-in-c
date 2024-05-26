@@ -37,8 +37,6 @@ bool is_ending_condition(int *arr, int arr_count)
 
 int *cut_the_sticks(int arr_count, int *arr, int *result_count)
 {
-    *result_count = *(int*)malloc(arr_count);
-
     int j = 0;
     
     while (!is_ending_condition(arr, arr_count))
@@ -68,9 +66,10 @@ int *cut_the_sticks(int arr_count, int *arr, int *result_count)
         printf("\n");
     }
 
-    for(int j = 0; j < arr_count; j++)
+    for (int i = 0; i < arr_count; i++)
     {
-        printf("counter of size is: %d\n", result_count[j]);
+        if(result_count[i] != 0)
+            printf("result is: %d\n", result_count[i]);
     }
 
     return result_count;
@@ -78,11 +77,11 @@ int *cut_the_sticks(int arr_count, int *arr, int *result_count)
 
 int main()
 {
-    int arr[] = {5, 4, 4, 2, 2, 8};
+    int arr[6] = {5, 4, 4, 2, 2, 8};
     
     int size = sizeof(arr) / sizeof(arr[0]);
     
-    int result_count[8] = {0};
+    int result_count[4] = {0};
 
     int *result = cut_the_sticks(size, arr, result_count);
 
@@ -94,5 +93,5 @@ int main()
             return 0;
     }
 
-    free(result);
+    free(result_count);
 }
