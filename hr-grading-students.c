@@ -1,9 +1,19 @@
 #include <stdio.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to round the grade to the nearest multiple of `multiple`
 int round_to_nearest_multiple(int grade, int multiple) 
 {
-    int rounded_grade = (grade + multiple);
-    return rounded_grade = rounded_grade % multiple;
+    if (grade < multiple) {
+        return grade;
+    }
+    int remainder = grade % multiple;
+    if (remainder >= multiple / 2) {
+        grade += (multiple - remainder);
+    }
+    return grade;
 }
 
 int *grading_students(int grades_count, int *grades, int *result_count) 
@@ -26,7 +36,9 @@ int *grading_students(int grades_count, int *grades, int *result_count)
         }
     }
 
-    return result_count;
+    *result_count = grades_count;
+
+    return grades;
 }
 
 int main() 
@@ -35,11 +47,11 @@ int main()
 
     int grades_count = sizeof(grades) / sizeof(grades[0]);
 
-    int result_count[4] = {0};
+    int result_count;
 
-    grading_students(grades_count, grades, result_count);
+    grading_students(grades_count, grades, &result_count);
 
-    for (int i = 0; i < grades_count; ++i) {
+    for (int i = 0; i < grades_count; i++) {
         printf("%d\n", grades[i]);
     }
 
